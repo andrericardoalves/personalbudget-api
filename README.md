@@ -18,3 +18,6 @@
 ### Running the project
 1. Enter the project directory and run:
 ```mvn spring-boot:run```
+
+#### Comments
+Swagger - http://localhost:8080/personalbuget/swagger-ui.html
