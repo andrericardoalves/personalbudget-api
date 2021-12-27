@@ -3,12 +3,14 @@ package com.alves.personalbudget.resource;
 import com.alves.personalbudget.dto.BudgetResumeDTO;
 import com.alves.personalbudget.event.ResourceCreatedEvent;
 import com.alves.personalbudget.exception.NonExistentOrInactivePersonException;
+import com.alves.personalbudget.exceptionhandler.RestError;
 import com.alves.personalbudget.filter.BudgetFilter;
 import com.alves.personalbudget.model.Budget;
 import com.alves.personalbudget.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -72,6 +76,14 @@ public class BudgetResource {
     @GetMapping(path = "/resume")
     public Page<BudgetResumeDTO> resume(BudgetFilter budgetFilter, Pageable pageable) {
         return service.resume(budgetFilter, pageable);
+    }
+
+    @ExceptionHandler({ NonExistentOrInactivePersonException.class })
+    public ResponseEntity<Object> handleNonExistentOrInactivePersonException(NonExistentOrInactivePersonException ex) {
+        String userMessage = messageSource.getMessage("non-existent-or-inactive-person", null, LocaleContextHolder.getLocale());
+        String developerMessage = ex.toString();
+        List<RestError> restErrors = Arrays.asList(new RestError(userMessage, developerMessage));
+        return ResponseEntity.badRequest().body(restErrors);
     }
 
 }
