@@ -1,12 +1,17 @@
 package com.alves.personalbudget.service;
 
+import com.alves.personalbudget.dto.BudgetResumeDTO;
 import com.alves.personalbudget.exception.NonExistentOrInactivePersonException;
+import com.alves.personalbudget.filter.BudgetFilter;
 import com.alves.personalbudget.model.Budget;
 import com.alves.personalbudget.model.Person;
 import com.alves.personalbudget.repository.BudgetRepository;
+import com.alves.personalbudget.repository.CustomizeBudgetRepositoryImpl;
 import com.alves.personalbudget.repository.PersonRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,6 +20,9 @@ import java.util.Optional;
 public class BudgetService {
     @Autowired
     private BudgetRepository repository;
+
+    @Autowired
+    private CustomizeBudgetRepositoryImpl repositoryCustomBudget;
 
     @Autowired
     private PersonRepository personRepository;
@@ -60,5 +68,13 @@ public class BudgetService {
 
     public void deleteById(Long id) {
         repository.deleteById(id);
+    }
+
+    public Page<Budget> find(BudgetFilter budgetFilter, Pageable pageable) {
+        return repositoryCustomBudget.find(budgetFilter, pageable);
+    }
+
+    public Page<BudgetResumeDTO> resume(BudgetFilter budgetFilter, Pageable pageable) {
+        return  repositoryCustomBudget.resume(budgetFilter, pageable);
     }
 }

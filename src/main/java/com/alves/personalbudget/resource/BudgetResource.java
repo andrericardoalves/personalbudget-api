@@ -1,11 +1,16 @@
 package com.alves.personalbudget.resource;
 
+import com.alves.personalbudget.dto.BudgetResumeDTO;
 import com.alves.personalbudget.event.ResourceCreatedEvent;
+import com.alves.personalbudget.exception.NonExistentOrInactivePersonException;
+import com.alves.personalbudget.filter.BudgetFilter;
 import com.alves.personalbudget.model.Budget;
 import com.alves.personalbudget.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -58,4 +63,15 @@ public class BudgetResource {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping
+    public Page<Budget> find(BudgetFilter budgetFilter, Pageable pageable) {
+        return service.find(budgetFilter, pageable);
+    }
+
+    @GetMapping(path = "/resume")
+    public Page<BudgetResumeDTO> resume(BudgetFilter budgetFilter, Pageable pageable) {
+        return service.resume(budgetFilter, pageable);
+    }
+
 }

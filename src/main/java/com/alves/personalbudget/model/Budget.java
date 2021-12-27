@@ -24,10 +24,10 @@ public class Budget {
     private String description;
 
     @NotNull
-    private LocalDate due_date;
+    private LocalDate dueDate;
 
     @NotNull
-    private LocalDate payment_date;
+    private LocalDate paymentDate;
 
     @NotNull
     private BigDecimal price;
