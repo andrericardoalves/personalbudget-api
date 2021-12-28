@@ -20,7 +20,11 @@ public class PersonService {
     public Person update(Long id, Person person) {
         Person persistedPerson = findById(id).get();
 
-        BeanUtils.copyProperties(person, persistedPerson, "id");
+        persistedPerson.getContacts().clear();
+        persistedPerson.getContacts().addAll(person.getContacts());
+        persistedPerson.getContacts().forEach(c -> c.setPerson(persistedPerson));
+
+        BeanUtils.copyProperties(person, persistedPerson, "id", "contacts");
         return repository.save(persistedPerson);
     }
 
@@ -36,6 +40,7 @@ public class PersonService {
     }
 
     public Person save(Person person) {
+        person.getContacts().forEach(c -> c.setPerson(person));
         return repository.save(person);
     }
 

@@ -1,13 +1,17 @@
 package com.alves.personalbudget.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,6 +31,11 @@ public class Person {
 
     @NotNull
     private Boolean active;
+
+    @JsonIgnoreProperties("person")
+    @Valid
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Contact> contacts;
 
     @JsonIgnore
     @Transient
