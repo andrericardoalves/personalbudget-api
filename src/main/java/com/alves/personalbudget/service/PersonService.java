@@ -41,6 +41,7 @@ public class PersonService {
 
     public Person save(Person person) {
         person.getContacts().forEach(c -> c.setPerson(person));
+        person.setActive(true);
         return repository.save(person);
     }
 

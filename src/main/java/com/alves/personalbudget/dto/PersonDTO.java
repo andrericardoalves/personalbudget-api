@@ -16,18 +16,19 @@ import java.util.List;
 @ApiModel
 public class PersonDTO {
 
+    private Long id;
     @NotBlank
     private String name;
     @NotBlank
     private String address;
     @NotBlank
-    private String address_number;
-    private String complement;
-    private String district;
+    private String addressNumber;
+    private String addressComplement;
+    private String addressDistrict;
     @NotBlank
-    private String zip_code;
+    private String addressZipCode;
     @NotBlank
-    private String cityId;
+    private String addressCityId;
     @NotNull
     private List<Contact> contacts;
 }

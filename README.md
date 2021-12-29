@@ -20,4 +20,4 @@
 ```mvn spring-boot:run```
 
 #### Comments
-Swagger - http://localhost:8080/personalbudget/swagger-ui.html
+Swagger - http://localhost:8080/personalbudget/swagger-ui/index.html
