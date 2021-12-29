@@ -1,8 +1,10 @@
 package com.alves.personalbudget.resource;
 
+import com.alves.personalbudget.dto.PersonDTO;
 import com.alves.personalbudget.event.ResourceCreatedEvent;
 import com.alves.personalbudget.model.Person;
 import com.alves.personalbudget.service.PersonService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -28,11 +30,15 @@ public class PersonResource {
     @Autowired
     private PersonService service;
 
+    @Autowired
+    private ModelMapper modelMapper ;
+
     @PostMapping
-    public ResponseEntity<Person> add(@Valid @RequestBody Person person) {
-        Person persistedPerson = service.save(person);
-        publisher.publishEvent(new ResourceCreatedEvent(this, response, persistedPerson.getId()));
-        return ResponseEntity.status(HttpStatus.CREATED).body(persistedPerson);
+    public ResponseEntity<Person> add(@Valid @RequestBody PersonDTO personDTO) {
+       Person person = this.modelMapper.map(personDTO, Person.class);
+       Person persistedPerson = service.save(person);
+       publisher.publishEvent(new ResourceCreatedEvent(this, response, persistedPerson.getId()));
+       return ResponseEntity.status(HttpStatus.CREATED).body(persistedPerson);
     }
 
     @GetMapping("/{id}")
